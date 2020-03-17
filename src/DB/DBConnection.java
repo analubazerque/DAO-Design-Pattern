@@ -18,7 +18,7 @@ public class DBConnection {
         }
     }
     public static DBConnection getInstance() {
-        System.out.println("here");
+        System.out.println("getting db instance here");
         if (instance == null) {
             instance = new DBConnection();
         }

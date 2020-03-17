@@ -1,16 +1,19 @@
 package Countries;
 
+import Continents.Continent;
 import DB.DBConnection;
 
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
 import java.util.List;
 
 public class CountryImpl implements CountryInterface {
 
     Connection conn = DBConnection.getInstance().getConnection();
+    List<Country> myList = new ArrayList<>();
 
     public CountryImpl() {}
 
@@ -25,25 +28,25 @@ public class CountryImpl implements CountryInterface {
             rs = stmt.executeQuery(query);
             while (rs.next()) {
                 String name = rs.getString("Name");
-                String continent = rs.getString("Continent");
+                Continent continent = Continent.valueOf(rs.getString("Continent").replace(" ", "_").toUpperCase());
                 String code = rs.getString("Code");
-                String area = rs.getString("SurfaceArea");
+                float area = rs.getFloat("SurfaceArea");
                 String headOfState = rs.getString("HeadOfState");
-                System.out.println(rs);
 
+                Country country = new Country(name, continent, code, area, headOfState);
+                myList.add(country);
             }
-            return null;
 
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        return null;
+        return myList;
     }
 
 
     @Override
-    public Country getCountryByName(String name) {
-        return null;
+    public String getCountryByName(String name) {
+        return name;
     }
 
     @Override

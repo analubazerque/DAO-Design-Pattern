@@ -4,15 +4,15 @@ import Continents.Continent;
 
 public class Country{
 
-    private char name;
+    private String name;
     private Continent continent;
-    private char code;
+    private String code;
     private float area;
-    private char headOfState;
+    private String headOfState;
 
-    private Country(){}
+    Country(){}
 
-    private Country(char name, Continent continent, char code, float area, char headOfState) {
+    public Country(String name, Continent continent, String code, float area, String headOfState) {
         this.name = name;
         this.continent = continent;
         this.code = code;
@@ -20,15 +20,15 @@ public class Country{
         this.headOfState = headOfState;
     }
 
-    public char getName() {
+    public String getName() {
         return name;
     }
 
-    public Enum getContinent() {
+    public Continent getContinent() {
         return continent;
     }
 
-    public char getCode() {
+    public String getCode() {
         return code;
     }
 
@@ -36,7 +36,7 @@ public class Country{
         return area;
     }
 
-    public char getHeadOfState() {
+    public String getHeadOfState() {
         return headOfState;
     }
 
