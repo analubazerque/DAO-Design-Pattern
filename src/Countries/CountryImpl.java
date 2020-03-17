@@ -46,21 +46,60 @@ public class CountryImpl implements CountryInterface {
 
     @Override
     public String getCountryByName(String name) {
+
+        Statement stmt = null;
+        ResultSet rs = null;
+        Country country = null;
+
+        try {
+            String query = "SELECT * FROM country WHERE Name = \"" + name + "\"";
+            stmt = conn.createStatement();
+            rs = stmt.executeQuery(query);
+            while (rs.next()) {
+                name = rs.getString("Name");
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
         return name;
     }
 
     @Override
-    public Country getCountryByCode(String code) {
-        return null;
+    public String getCountryByCode(String code) {
+        Statement stmt = null;
+        ResultSet rs = null;
+        Country country = null;
+
+        try {
+            String query = "SELECT * FROM country WHERE Name = \"" + code + "\"";
+            stmt = conn.createStatement();
+            rs = stmt.executeQuery(query);
+            while (rs.next()) {
+                code = rs.getString("Code");
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return code;
     }
 
     @Override
-    public Country createCountry() {
-        return null;
+    public void createCountry(Country country) {
+        Statement stmt = null;
+        ResultSet rs = null;
+
+        try {
+            String query = "INSERT INTO country (Code, Name, Continent, SurfaceArea, HeadOfState)" +
+                    " VALUES (JHG, Laos, Afrika, 1,4443, Joao Ninguem)";
+            stmt = conn.createStatement();
+            rs = stmt.executeQuery(query);
+            
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
-
-    //Country countries = Country.(rs.getString("name"), rs.getString("continent"), rs.getString("code"), rs.getInt("area"), rs.getString("headOfState"));
-
-
 };
 
