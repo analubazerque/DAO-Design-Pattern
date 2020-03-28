@@ -1,105 +1,115 @@
 package Countries;
-
-import Continents.Continent;
 import DB.DBConnection;
-
-import java.sql.Connection;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
+import java.sql.*;
 import java.util.ArrayList;
-import java.util.List;
 
 public class CountryImpl implements CountryInterface {
 
-    Connection conn = DBConnection.getInstance().getConnection();
-    List<Country> myList = new ArrayList<>();
+    DBConnection db = DBConnection.getInstance();
+    ArrayList<Country.CountryBuilder> countriesList = new ArrayList<Country.CountryBuilder>();
+    String query = "SELECT * FROM country";
+    ResultSet rs;
 
-    public CountryImpl() {}
+    Continent continent;
+    String code = "";
+    float area = 0;
+    String headOfState = "";
+    Country.CountryBuilder countryBuilder;
+
+    public CountryImpl() {
+    }
 
     @Override
-    public List<Country> getAllCountries() {
-        Statement stmt = null;
-        ResultSet rs = null;
-
+    public ArrayList<Country.CountryBuilder> getAllCountries() {
+        String query = "SELECT * FROM country";
+        rs = db.select(query);
         try {
-            String query = "SELECT * FROM country";
-            stmt = conn.createStatement();
-            rs = stmt.executeQuery(query);
+
             while (rs.next()) {
                 String name = rs.getString("Name");
-                Continent continent = Continent.valueOf(rs.getString("Continent").replace(" ", "_").toUpperCase());
-                String code = rs.getString("Code");
+                String cntntSt = rs.getString("Continent");
+                Continent continent1 = Continent.getContinentEnum(cntntSt);
+                code = rs.getString("Code");
+                area = rs.getFloat("SurfaceArea");
+                headOfState = rs.getString("HeadOfState");
+
+                countryBuilder = new Country.CountryBuilder(name, continent1, code, area, headOfState);
+                countriesList.add(countryBuilder);
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return countriesList;
+    }
+
+
+    @Override
+    public Country.CountryBuilder getCountryByName(String name) {
+
+        String query = "SELECT * FROM country WHERE Name = \"" + name + "\"";
+        //Statement stmt = null;
+        ResultSet rs = db.select(query);
+
+        try {
+
+            while (rs.next()) {
+                name = rs.getString("Name");
+                String cntntSt = rs.getString("Continent");
+                Continent continent = Continent.getContinentEnum(cntntSt);
+                code = rs.getString("Code");
+                area = rs.getFloat("SurfaceArea");
+                headOfState = rs.getString("HeadOfState");
+                countryBuilder = new Country.CountryBuilder(name, continent, code, area, headOfState);
+                return countryBuilder;
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    @Override
+    public Country getCountryByCode(String code) {
+
+        String query = "SELECT * FROM country WHERE Code = \"" + code + "\"";
+        ResultSet rs = db.select(query);
+        try {
+
+            while (rs.next()) {
+                String name = rs.getString("Name");
+                System.out.println(name);
+                String cntntSt = rs.getString("Continent");
+                Continent continent = Continent.getContinentEnum(cntntSt);
+                code = rs.getString("Code");
                 float area = rs.getFloat("SurfaceArea");
                 String headOfState = rs.getString("HeadOfState");
 
-                Country country = new Country(name, continent, code, area, headOfState);
-                myList.add(country);
+                countryBuilder = new Country.CountryBuilder(name, continent, code, area, headOfState);
+                return countryBuilder;
+
             }
 
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        return myList;
+        return null;
     }
 
 
     @Override
-    public String getCountryByName(String name) {
+    public boolean createCountry(Country country) {
 
-        Statement stmt = null;
-        ResultSet rs = null;
-        Country country = null;
+        String name = country.getName();
+        Continent continent = country.getContinent(name);
+        float area = country.getArea();
+        String headOfState = country.getHeadOfState();
+        String query = "INSERT INTO world.country (Code, Name, Continent, SurfaceArea, HeadOfState)\n" +
+                "VALUES ('URS', 'Ursal', 'South America', '20000000', 'The People')";
 
-        try {
-            String query = "SELECT * FROM country WHERE Name = \"" + name + "\"";
-            stmt = conn.createStatement();
-            rs = stmt.executeQuery(query);
-            while (rs.next()) {
-                name = rs.getString("Name");
-            }
+        return db.insert(query);
 
-        } catch (SQLException e) {
-            e.printStackTrace();
         }
-        return name;
-    }
-
-    @Override
-    public String getCountryByCode(String code) {
-        Statement stmt = null;
-        ResultSet rs = null;
-        Country country = null;
-
-        try {
-            String query = "SELECT * FROM country WHERE Name = \"" + code + "\"";
-            stmt = conn.createStatement();
-            rs = stmt.executeQuery(query);
-            while (rs.next()) {
-                code = rs.getString("Code");
-            }
-
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return code;
-    }
-
-    @Override
-    public void createCountry(Country country) {
-        Statement stmt = null;
-        ResultSet rs = null;
-
-        try {
-            String query = "INSERT INTO country (Code, Name, Continent, SurfaceArea, HeadOfState)" +
-                    " VALUES (JHG, Laos, Afrika, 1,4443, Joao Ninguem)";
-            stmt = conn.createStatement();
-            rs = stmt.executeQuery(query);
-            
-
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-    }
-};
+    };
 

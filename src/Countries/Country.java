@@ -1,31 +1,30 @@
 package Countries;
 
-import Continents.Continent;
+public abstract class Country {
 
-public class Country{
+    protected String name;
+    protected Continent continent;
+    protected String code;
+    protected float area;
+    protected String headOfState;
 
-    private String name;
-    private Continent continent;
-    private String code;
-    private float area;
-    private String headOfState;
+    protected Country() {
+    }
 
-    Country(){}
-
-    public Country(String name, Continent continent, String code, float area, String headOfState) {
-        this.name = name;
-        this.continent = continent;
-        this.code = code;
-        this.area = area;
-        this.headOfState = headOfState;
+    protected Country(CountryBuilder builder) {
+        this.name = builder.name;
+        this.continent = builder.continent;
+        this.code = builder.code;
+        this.area = builder.area;
+        this.headOfState = builder.headOfState;
     }
 
     public String getName() {
         return name;
     }
 
-    public Continent getContinent() {
-        return continent;
+    public Continent getContinent(String continentSt) {
+        return Continent.getContinentEnum(continentSt);
     }
 
     public String getCode() {
@@ -40,15 +39,54 @@ public class Country{
         return headOfState;
     }
 
-    @Override
-    public String toString() {
-        return "Country{" +
-                "name=" + name +
-                ", continent=" + continent +
-                ", code=" + code +
-                ", area=" + area +
-                ", headOfState=" + headOfState +
-                '}';
+    public static class CountryBuilder extends Country {
+        private String name;
+        private Continent continent;
+        private String code;
+        private float area;
+        private String headOfState;
+
+        public CountryBuilder(String name, Continent continent, String code, float area, String headOfState) {
+            this.name = name;
+            this.continent = continent;
+            this.code = code;
+            this.area = area;
+            this.headOfState = headOfState;
+
+        }
+
+        public CountryBuilder setName(String name) {
+            this.name = name;
+            return this;
+        }
+
+        public CountryBuilder setContinent(Continent continent) {
+            this.continent = continent;
+            return this;
+        }
+
+        public CountryBuilder setArea(float area) {
+            this.area = area;
+            return this;
+        }
+
+        public CountryBuilder setHeadOfState(String headOfState) {
+            this.headOfState = headOfState;
+            return this;
+        }
+
+
+        @Override
+        public String toString() {
+            return "Country{" +
+                    "name=" + name +
+                    ", continent=" + continent +
+                    ", code=" + code +
+                    ", area=" + area +
+                    ", headOfState=" + headOfState +
+                    '}';
+        }
     }
 }
+
 

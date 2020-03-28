@@ -2,14 +2,14 @@ package Countries;
 
 import DB.DBConnection;
 
-import java.util.List;
+import java.util.ArrayList;
 
 public interface CountryInterface {
 
     DBConnection conn = DBConnection.getInstance();
-    public List<Country> getAllCountries();
-    public String getCountryByName(String name);
-    public String getCountryByCode(String code);
-    public void createCountry(Country country);
+    public ArrayList<Country.CountryBuilder> getAllCountries();
+    public Country.CountryBuilder getCountryByName(String name);
+    public Country getCountryByCode(String code);
+    public boolean createCountry(Country country);
 
 }
