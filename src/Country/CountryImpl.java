@@ -1,4 +1,4 @@
-package Countries;
+package Country;
 import DB.DBConnection;
 import java.sql.*;
 import java.util.ArrayList;
@@ -6,10 +6,9 @@ import java.util.ArrayList;
 public class CountryImpl implements CountryInterface {
 
     DBConnection db = DBConnection.getInstance();
-    ArrayList<Country.CountryBuilder> countriesList = new ArrayList<Country.CountryBuilder>();
+    ArrayList<Country> countriesList = new ArrayList<Country>();
     String query = "SELECT * FROM country";
     ResultSet rs;
-
     Continent continent;
     String code = "";
     float area = 0;
@@ -20,7 +19,7 @@ public class CountryImpl implements CountryInterface {
     }
 
     @Override
-    public ArrayList<Country.CountryBuilder> getAllCountries() {
+    public ArrayList<Country> getAllCountries() {
         String query = "SELECT * FROM country";
         rs = db.select(query);
         try {
@@ -33,8 +32,8 @@ public class CountryImpl implements CountryInterface {
                 area = rs.getFloat("SurfaceArea");
                 headOfState = rs.getString("HeadOfState");
 
-                countryBuilder = new Country.CountryBuilder(name, continent1, code, area, headOfState);
-                countriesList.add(countryBuilder);
+                countryBuilder = new Country.CountryBuilder(code, name, continent1, area, headOfState);
+                countriesList.add(countryBuilder.build());
             }
 
         } catch (SQLException e) {
@@ -45,7 +44,7 @@ public class CountryImpl implements CountryInterface {
 
 
     @Override
-    public Country.CountryBuilder getCountryByName(String name) {
+    public Country getCountryByName(String name) {
 
         String query = "SELECT * FROM country WHERE Name = \"" + name + "\"";
         //Statement stmt = null;
@@ -60,8 +59,8 @@ public class CountryImpl implements CountryInterface {
                 code = rs.getString("Code");
                 area = rs.getFloat("SurfaceArea");
                 headOfState = rs.getString("HeadOfState");
-                countryBuilder = new Country.CountryBuilder(name, continent, code, area, headOfState);
-                return countryBuilder;
+                countryBuilder = new Country.CountryBuilder(code, name, continent, area, headOfState);
+                return countryBuilder.build();
             }
 
         } catch (SQLException e) {
@@ -86,8 +85,8 @@ public class CountryImpl implements CountryInterface {
                 float area = rs.getFloat("SurfaceArea");
                 String headOfState = rs.getString("HeadOfState");
 
-                countryBuilder = new Country.CountryBuilder(name, continent, code, area, headOfState);
-                return countryBuilder;
+                countryBuilder = new Country.CountryBuilder(code, name, continent, area, headOfState);
+                return countryBuilder.build();
 
             }
 
@@ -97,16 +96,16 @@ public class CountryImpl implements CountryInterface {
         return null;
     }
 
-
     @Override
-    public boolean createCountry(Country country) {
+    public boolean createCountry(Country inputCountry) {
 
-        String name = country.getName();
-        Continent continent = country.getContinent(name);
-        float area = country.getArea();
-        String headOfState = country.getHeadOfState();
-        String query = "INSERT INTO world.country (Code, Name, Continent, SurfaceArea, HeadOfState)\n" +
-                "VALUES ('URS', 'Ursal', 'South America', '20000000', 'The People')";
+        String code = inputCountry.getCode();
+        String name = inputCountry.getName();
+        Continent continent = inputCountry.getContinent();
+        float area = inputCountry.getArea();
+        String headOfState = inputCountry.getHeadOfState();
+        String query = "INSERT INTO world.country (Code, Name, Continent, SurfaceArea, HeadOfState)" +
+                "VALUES (\"" + code + "\", \"" + name + "\", \"" + continent + "\", " + area + ", \"" + headOfState + "\")";
 
         return db.insert(query);
 

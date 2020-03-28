@@ -1,4 +1,4 @@
-package Countries;
+package Country;
 
 public enum Continent {
 

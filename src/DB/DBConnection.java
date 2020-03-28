@@ -35,7 +35,7 @@ public class DBConnection {
 
     public boolean insert(String query) {
         try {
-            stmt.executeQuery(query);
+            stmt.execute(query);
             return true;
 
         } catch (SQLException e) {
@@ -46,7 +46,7 @@ public class DBConnection {
     }
 
         public static DBConnection getInstance() {
-        System.out.println("getting db instance here");
+
         if (instance == null) {
             instance = new DBConnection();
         }
