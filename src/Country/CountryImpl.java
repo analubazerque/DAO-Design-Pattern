@@ -1,7 +1,14 @@
+/*
+ *  @Author Ana Luiza Bazerque
+ */
+
 package Country;
 import DB.DBConnection;
 import java.sql.*;
 import java.util.ArrayList;
+
+/* Implementation of the methods created in the interface
+* using the DAO Design Pattern */
 
 public class CountryImpl implements CountryInterface {
 
@@ -18,6 +25,7 @@ public class CountryImpl implements CountryInterface {
     public CountryImpl() {
     }
 
+    // method to get all the countries from the db and save them into an arrayList
     @Override
     public ArrayList<Country> getAllCountries() {
         String query = "SELECT * FROM country";
@@ -34,6 +42,7 @@ public class CountryImpl implements CountryInterface {
 
                 countryBuilder = new Country.CountryBuilder(code, name, continent1, area, headOfState);
                 countriesList.add(countryBuilder.build());
+
             }
 
         } catch (SQLException e) {
@@ -42,7 +51,7 @@ public class CountryImpl implements CountryInterface {
         return countriesList;
     }
 
-
+    // method that finds a country from its name
     @Override
     public Country getCountryByName(String name) {
 
@@ -69,6 +78,7 @@ public class CountryImpl implements CountryInterface {
         return null;
     }
 
+    // method that finds a country from its code
     @Override
     public Country getCountryByCode(String code) {
 
@@ -96,6 +106,7 @@ public class CountryImpl implements CountryInterface {
         return null;
     }
 
+    // method to create a country object to be sent to the db
     @Override
     public boolean createCountry(Country inputCountry) {
 
@@ -110,5 +121,5 @@ public class CountryImpl implements CountryInterface {
         return db.insert(query);
 
         }
-    };
 
+};

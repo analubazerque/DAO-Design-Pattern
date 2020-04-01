@@ -1,3 +1,8 @@
+
+/*
+ *  @Author Ana Luiza Bazerque
+ */
+
 package DB;
 
 import java.sql.*;
@@ -11,9 +16,14 @@ public class DBConnection {
     private ResultSet rs = null;
     private Statement stmt = null;
 
+    /* the Database class was implemented using the Singleton Pattern
+    * */
+
     private DBConnection() {
         try {
+            // loading db driver
             Class.forName("com.mysql.cj.jdbc.Driver");
+            // get connection with db
             connection = DriverManager.getConnection(
                     url, username, password);
         } catch (Exception e) {
@@ -21,6 +31,7 @@ public class DBConnection {
         }
     }
 
+    // method to get data from the database
     public ResultSet select(String query) {
 
         try {
@@ -33,6 +44,7 @@ public class DBConnection {
         return rs;
     }
 
+    // method for inserting a country into the database
     public boolean insert(String query) {
         try {
             stmt.execute(query);
@@ -44,7 +56,7 @@ public class DBConnection {
             return false;
         }
     }
-
+        // static method to control the access to the db
         public static DBConnection getInstance() {
 
         if (instance == null) {

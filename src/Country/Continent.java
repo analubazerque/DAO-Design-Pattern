@@ -1,4 +1,11 @@
+
+/*
+ *  @Author Ana Luiza Bazerque
+ */
+
 package Country;
+
+// enum with the only option valid for continent
 
 public enum Continent {
 
@@ -16,6 +23,13 @@ public enum Continent {
     private Continent(String continent) {
         this.continent = continent;
     }
+
+    /* this method was a work around the fact that
+    *  there was a problem and someone was able to
+    * add an empty entry in the Continent and the valueOf()
+    * method stopped working for a while.
+    * I only left it there for the sake of problem solving skills.
+    * */
 
     public static Continent getContinentEnum(String continent){
         if(continent.equalsIgnoreCase("Europe"))

@@ -1,5 +1,14 @@
+
+/*
+ *  @Author Ana Luiza Bazerque
+ */
+
 package Country;
 
+/*
+* Class of the object country
+*
+ */
 public class Country {
     private String code;
     private String name;
@@ -15,6 +24,8 @@ public class Country {
         this.area = builder.area;
         this.headOfState = builder.headOfState;
     }
+
+    // this class contains the getter to get info from the db
 
     public String getCode() {
         return code;
@@ -36,6 +47,20 @@ public class Country {
         return headOfState;
     }
 
+    @Override
+    public String toString() {
+        return "Country {" +
+                "code = '" + code + '\'' +
+                ", name = '" + name + '\'' +
+                ", continent = " + continent +
+                ", area = " + area +
+                ", headOfState = '" + headOfState + '\'' +
+                '}';
+    }
+
+    /* class constructor of a country, implementing the Bulder Design Pattern
+    *  this is the class responsible for instantiating the object country
+    * */
     public static class CountryBuilder {
         private String code;
         private String name;
@@ -53,6 +78,7 @@ public class Country {
 
         }
 
+        // these are the setters to set values to the country attributes
         public CountryBuilder setName(String name) {
             this.name = name;
             return this;
@@ -72,21 +98,14 @@ public class Country {
             this.headOfState = headOfState;
             return this;
         }
-
+        /* this method creates an instance of the
+        * Country class with the data set in the builder
+        * */
         public Country build(){
             return new Country(this);
         }
 
-        @Override
-        public String toString() {
-            return "Country{" +
-                    "code='" + code + '\'' +
-                    ", name='" + name + '\'' +
-                    ", continent=" + continent +
-                    ", area=" + area +
-                    ", headOfState='" + headOfState + '\'' +
-                    '}';
-        }
+
     }
 }
 

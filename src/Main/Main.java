@@ -1,17 +1,19 @@
-package Main;
 
-import Country.Country;
-import Country.CountryImpl;
-import Country.CountryInterface;
+/*
+ *  @Author Ana Luiza Bazerque
+ */
+
+
+package Main;
 
 import View.Menu;
 
 import java.io.IOException;
-import java.util.ArrayList;
 
 public class Main {
 
     public static void main(String[] args) throws IOException {
+        System.out.println("*****WELCOME TO THE COUNTRY DATABASE*****");
         Menu menu = new Menu();
         menu.Menu();
 
