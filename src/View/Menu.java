@@ -6,9 +6,8 @@ package View;
 
 import Country.Continent;
 import Country.Country;
-import Country.CountryImpl;
-import Country.CountryInterface;
-
+import Country.CountryImplDAO;
+import Country.CountryIntDAO;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -20,13 +19,11 @@ public class Menu {
     private String selection;
     private Scanner inputsc = new Scanner(System.in);
     private BufferedReader input = new BufferedReader(new InputStreamReader(System.in));
-    private CountryInterface countryImpl = new CountryImpl();
+    private CountryIntDAO countryImpl = new CountryImplDAO();
     private ArrayList<Country> countryList;
 
 
     public void Menu() throws IOException {
-
-        countryList = countryImpl.getAllCountries();
 
         System.out.println("-------------------------\n");
         System.out.println("Please select an option from 1 to 5");
@@ -62,7 +59,8 @@ public class Menu {
             case 1:
                 System.out.println("Please type in the country's name");
                 String name = input.readLine();
-                System.out.println(countryImpl.getCountryByName(name));
+                countryList = countryImpl.getCountriesByKeyword(name);
+                printList(countryList);
                 Menu();
                 break;
             case 2:

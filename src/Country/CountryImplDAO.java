@@ -10,7 +10,7 @@ import java.util.ArrayList;
 /* Implementation of the methods created in the interface
 * using the DAO Design Pattern */
 
-public class CountryImpl implements CountryInterface {
+public class CountryImplDAO implements CountryIntDAO {
 
     DBConnection db = DBConnection.getInstance();
     ArrayList<Country> countriesList = new ArrayList<Country>();
@@ -22,7 +22,7 @@ public class CountryImpl implements CountryInterface {
     String headOfState = "";
     Country.CountryBuilder countryBuilder;
 
-    public CountryImpl() {
+    public CountryImplDAO() {
     }
 
     // method to get all the countries from the db and save them into an arrayList
@@ -51,12 +51,11 @@ public class CountryImpl implements CountryInterface {
         return countriesList;
     }
 
-    // method that finds a country from its name
+    // method that finds a country from its keyword
     @Override
-    public Country getCountryByName(String name) {
+    public ArrayList<Country> getCountriesByKeyword(String name) {
 
-        String query = "SELECT * FROM country WHERE Name = \"" + name + "\"";
-        //Statement stmt = null;
+        String query = "SELECT * FROM country WHERE Name LIKE \"%" + name + "%\"";
         ResultSet rs = db.select(query);
 
         try {
@@ -69,13 +68,14 @@ public class CountryImpl implements CountryInterface {
                 area = rs.getFloat("SurfaceArea");
                 headOfState = rs.getString("HeadOfState");
                 countryBuilder = new Country.CountryBuilder(code, name, continent, area, headOfState);
-                return countryBuilder.build();
+                countriesList.add(countryBuilder.build());
+
             }
 
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        return null;
+        return countriesList;
     }
 
     // method that finds a country from its code

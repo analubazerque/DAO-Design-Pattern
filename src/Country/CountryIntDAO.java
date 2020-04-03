@@ -8,13 +8,13 @@ import DB.DBConnection;
 
 import java.util.ArrayList;
 
-public interface CountryInterface {
+public interface CountryIntDAO {
 
     // interface that is part of the DAO implementation
 
     DBConnection conn = DBConnection.getInstance();
     public ArrayList<Country> getAllCountries();
-    public Country getCountryByName(String name);
+    public ArrayList<Country> getCountriesByKeyword(String name);
     public Country getCountryByCode(String code);
     public boolean createCountry(Country country);
 
